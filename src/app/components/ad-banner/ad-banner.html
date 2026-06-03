@@ -1,0 +1,19 @@
+<div class="ad-slot" #host>
+  <span class="ad-slot__eyebrow">{{ eyebrow() }}</span>
+  @if (adsenseEnabled && adsenseSlot()) {
+    <ins
+      class="adsbygoogle adsense-unit"
+      [class]="'ad ' + adClass()"
+      style="display: block"
+      [attr.data-ad-client]="environment.adsenseClientId"
+      [attr.data-ad-slot]="adsenseSlot()"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    ></ins>
+  } @else {
+    <div [class]="'ad ' + adClass()">
+      <span class="ad__tag">Espacio publicitario</span>
+      <span class="ad__dim">{{ position() }}</span>
+    </div>
+  }
+</div>

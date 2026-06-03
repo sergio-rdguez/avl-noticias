@@ -1,0 +1,108 @@
+@if (vm$ | async; as vm) {
+  @if (vm.article; as article) {
+    <main class="wrap">
+      <div class="crumbs">
+        <a routerLink="/home">Portada</a><span class="sep">/</span>
+        <span>{{ article.category }}</span><span class="sep">/</span>
+        <span>Atlético</span>
+      </div>
+
+      <div class="layout">
+        <article class="article-col">
+          <header class="article__head">
+            <span class="kicker">{{ article.kicker }}</span>
+            <h1 class="article__title">{{ article.title }}</h1>
+            <p class="article__dek">{{ article.excerpt }}</p>
+            <div class="article__meta">
+              <div class="avatar">{{ article.authorInitials }}</div>
+              <div class="author-line">
+                <span class="byline">Por {{ article.author }}</span>
+                <span class="meta">{{ article.updatedLabel }} · {{ article.readMinutes }} min de lectura</span>
+              </div>
+            </div>
+          </header>
+
+          <div class="inline-ad">
+            <app-ad-banner position="responsive-slot" eyebrow="Publicidad"></app-ad-banner>
+          </div>
+
+          <div class="article-body">
+            @for (block of article.body; track $index) {
+              @if (block.type === 'p' && $index === 0) {
+                <p class="article__lede">{{ block.text }}</p>
+              } @else if (block.type === 'p') {
+                <p>{{ block.text }}</p>
+              } @else if (block.type === 'h2') {
+                <h2>{{ block.text }}</h2>
+              } @else if (block.type === 'pull') {
+                <p class="pull">{{ block.text }}</p>
+              } @else if (block.type === 'figure') {
+                <figure>
+                  @if (block.imageUrl) {
+                    <img class="article-img" [src]="block.imageUrl" [alt]="block.caption" />
+                  } @else {
+                    <div class="ph"><span>{{ block.placeholder }}</span></div>
+                  }
+                  <figcaption>{{ block.caption }}</figcaption>
+                </figure>
+              } @else if (block.type === 'ad') {
+                <div class="inline-ad">
+                  <app-ad-banner [position]="block.slot"></app-ad-banner>
+                </div>
+              }
+            }
+          </div>
+
+          <div class="article__sign">
+            <div class="article__meta" style="margin: 0">
+              <div class="avatar">{{ article.authorInitials }}</div>
+              <div class="author-line">
+                <span class="byline">Por {{ article.author }}</span>
+                <span class="meta">Redactor de mercado · AVL Noticias</span>
+              </div>
+            </div>
+            <div class="share">
+              <a href="#">Compartir</a>
+              <a href="#">X</a>
+              <a href="#">WhatsApp</a>
+            </div>
+          </div>
+
+          <div style="margin-top: 34px">
+            <app-ad-banner position="native-slot" eyebrow="Publicidad"></app-ad-banner>
+          </div>
+        </article>
+
+        <app-sidebar [mostRead]="vm.mostRead" [excludeSlug]="article.slug"></app-sidebar>
+      </div>
+
+      <section class="related">
+        <div class="secline" style="margin-top: 0">
+          <span class="kicker">Seguir leyendo</span>
+          <hr class="rule" />
+        </div>
+        <div class="related-grid">
+          @for (rel of vm.related; track rel.slug) {
+            <article class="card">
+              @if (rel.imageUrl) {
+                <img class="article-img article-img--related" [src]="rel.imageUrl" [alt]="rel.title" />
+              } @else {
+                <div class="ph"><span>{{ rel.imagePlaceholder }}</span></div>
+              }
+              <a [routerLink]="['/article', rel.slug]">
+                <h3 class="h-card">{{ rel.title }}</h3>
+              </a>
+              <span class="meta" style="display: block; margin-top: 12px">{{ rel.category }} · {{ rel.updatedLabel }}</span>
+            </article>
+          }
+        </div>
+      </section>
+    </main>
+  } @else {
+    <div class="wrap not-found">
+      <h1>Noticia no encontrada</h1>
+      <p class="meta">El artículo que buscas no existe o ha sido retirado.</p>
+      <a routerLink="/home" style="text-decoration: underline">Volver a portada</a>
+    </div>
+  }
+}

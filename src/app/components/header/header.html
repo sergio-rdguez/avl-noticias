@@ -1,0 +1,35 @@
+<header>
+  <div class="topbar">
+    <div class="wrap topbar__inner">
+      <span class="topbar__date">{{ today | date: 'EEEE, d MMMM y' : '' : 'es' }} — Madrid</span>
+      <nav class="topbar__links" aria-label="Enlaces superiores">
+        <a href="#">Newsletter</a>
+        <a href="#">En directo</a>
+        <a href="#">Suscríbete</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="masthead">
+    <div class="wrap masthead__inner">
+      <a routerLink="/home" class="brand">
+        <span class="brand__mark">AVL</span>
+        <span class="brand__sub">Noticias</span>
+      </a>
+      <app-ad-banner position="header-slot" eyebrow="Publicidad"></app-ad-banner>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Secciones">
+    <div class="wrap nav__inner">
+      <a routerLink="/home" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Portada</a>
+      <a href="#">Mercado</a>
+      <a href="#">LaLiga</a>
+      <a href="#">Champions</a>
+      <a href="#">Atlético</a>
+      <a href="#">Premier</a>
+      <a href="#">Opinión</a>
+      <span class="nav__live"><span class="dot"></span>Fichajes en directo</span>
+    </div>
+  </nav>
+</header>

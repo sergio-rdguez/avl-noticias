@@ -1,0 +1,17 @@
+<aside class="sidebar-panel">
+  <div class="most">
+    <h4>Lo más leído</h4>
+    <ol>
+      @for (item of mostRead(); track item.slug) {
+        @if (item.slug !== excludeSlug()) {
+          <li>
+            <a [routerLink]="['/article', item.slug]">{{ item.title }}</a>
+          </li>
+        }
+      }
+    </ol>
+  </div>
+  <div>
+    <app-ad-banner position="sidebar-slot" eyebrow="Publicidad"></app-ad-banner>
+  </div>
+</aside>

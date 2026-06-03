@@ -1,0 +1,115 @@
+@if (vm$ | async; as vm) {
+  <main class="wrap">
+    @if (!vm.backendReady) {
+      <section class="empty-state">
+        <h1 class="h-cover">Configura Supabase</h1>
+        <p class="dek">
+          Añade <code>supabaseUrl</code> y <code>supabaseAnonKey</code> en
+          <code>src/environments/environment.ts</code>. Guía en <code>SUPABASE.md</code>.
+        </p>
+      </section>
+    } @else if (!vm.hasContent) {
+      <section class="empty-state">
+        <h1 class="h-cover">AVL Noticias</h1>
+        <p class="dek">
+          Aún no hay artículos publicados. Crea el primero en Supabase → Table Editor →
+          <strong>articles</strong> (marca <strong>published</strong> y opcionalmente
+          <strong>featured</strong>).
+        </p>
+      </section>
+    } @else {
+      @if (vm.featured; as featured) {
+        <section class="hero">
+          <div class="hero__main">
+            <span class="kicker">{{ featured.kicker }}</span>
+            <a [routerLink]="['/article', featured.slug]">
+              <h1 class="h-cover" style="margin-top: 16px">{{ featured.title }}</h1>
+            </a>
+            <p class="dek">{{ featured.excerpt }}</p>
+            <div class="hero__media">
+              @if (featured.imageUrl) {
+                <img class="article-img article-img--hero" [src]="featured.imageUrl" [alt]="featured.title" />
+              } @else {
+                <div class="ph"><span>{{ featured.imagePlaceholder }}</span></div>
+              }
+            </div>
+            <div class="hero__foot">
+              <span class="byline">Por {{ featured.author }}</span>
+              <span class="meta">{{ featured.updatedLabel }} · {{ featured.readMinutes }} min de lectura</span>
+            </div>
+          </div>
+
+          <div class="hero__side">
+            <ul class="side-list">
+              @for (item of vm.sideList; track item.slug) {
+                <li>
+                  <span class="label">{{ item.category }}</span>
+                  <a [routerLink]="['/article', item.slug]">
+                    <h3 class="h-list">{{ item.title }}</h3>
+                  </a>
+                  <span class="meta">{{ item.updatedLabel }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </section>
+      }
+
+      <hr class="rule" style="margin-top: 8px" />
+
+      <div style="margin: 26px 0">
+        <app-ad-banner position="native-slot" eyebrow="Contenido patrocinado"></app-ad-banner>
+      </div>
+
+      <hr class="rule" />
+
+      @if (vm.cards.length > 0) {
+        <div class="secline">
+          <span class="kicker">Mercado de fichajes</span>
+          <hr class="rule" />
+        </div>
+
+        <section class="cards">
+          @for (card of vm.cards; track card.slug) {
+            <article class="card">
+              @if (card.imageUrl) {
+                <img class="article-img article-img--card" [src]="card.imageUrl" [alt]="card.title" />
+              } @else {
+                <div class="ph"><span>{{ card.imagePlaceholder }}</span></div>
+              }
+              <a [routerLink]="['/article', card.slug]">
+                <h3 class="h-card">{{ card.title }}</h3>
+              </a>
+              <p class="dek">{{ card.excerpt }}</p>
+              <span class="meta">{{ card.category }} · Por {{ card.author }}</span>
+            </article>
+          }
+        </section>
+
+        <hr class="rule" style="margin: 34px 0 0" />
+      }
+
+      @if (vm.ticker.length > 0) {
+        <div class="secline">
+          <span class="kicker kicker--muted">El tablón del mercado</span>
+          <hr class="rule" />
+        </div>
+
+        <section class="market">
+          <ul class="ticker">
+            @for (item of vm.ticker; track item.headline) {
+              <li>
+                <span class="t-tag">{{ item.tag }}</span>
+                <span class="t-head">{{ item.headline }}</span>
+                <span class="t-time">{{ item.time }}</span>
+              </li>
+            }
+          </ul>
+          <div>
+            <app-ad-banner position="in-article-slot" eyebrow="Publicidad"></app-ad-banner>
+          </div>
+        </section>
+      }
+    }
+  </main>
+}
