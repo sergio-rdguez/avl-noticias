@@ -20,6 +20,12 @@ En **SQL Editor**, pega y ejecuta el contenido de [`supabase/schema.sql`](supaba
 
 ## 4. Configurar Angular (local)
 
+Copia la plantilla (el archivo real no se sube a Git):
+
+```bash
+cp src/environments/environment.example.ts src/environments/environment.ts
+```
+
 Edita [`src/environments/environment.ts`](src/environments/environment.ts):
 
 ```ts
